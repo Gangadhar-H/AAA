@@ -1,0 +1,47 @@
+Program 4 -
+query 1: 
+select e.name, d.dname from employee e join department d on e.dnumber=d.dnumber 
+    and e.salary > (
+    select avg(salary) from employee e join department d on e.dnumber = d.dnumber and d.dname = "Finance"
+    );
+
+query 2:
+select e.name
+from employee e
+join works_on w on e.ssn = w.ssn
+join project p on p.pnumber = w.pnumber
+where p.dnumber = (
+    select dnumber
+    from department
+    where dname = "R&D"
+)
+group by e.name
+having count(w.pnumber) > 2;
+
+query 3:
+select p.pname from project p join department d on d.dnumber=p.dnumber where p.end_date > current_date;
+
+query 4:
+SELECT s.name AS supervisor_name
+FROM employee e
+JOIN employee s ON e.s_ssn = s.ssn
+JOIN works_on w ON e.ssn = w.ssn
+JOIN project p ON w.pnumber = p.pnumber
+WHERE p.end_date < CURRENT_DATE
+GROUP BY s.ssn, s.name
+HAVING COUNT(DISTINCT e.ssn) > 3;
+
+query 5:
+SELECT d.name
+FROM dependent d
+JOIN employee e ON e.ssn = d.ssn
+WHERE e.name IN (
+    SELECT e.name
+    FROM employee e
+    JOIN works_on w ON e.ssn = w.ssn
+    JOIN project p ON p.pnumber = w.pnumber
+    GROUP BY e.name
+    HAVING SUM(p.proj_cost) = 1000000
+);
+
+
