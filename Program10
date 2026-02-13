@@ -1,0 +1,96 @@
+package StudentResource;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import com.example.model.*;
+/**
+ * Servlet implementation class StudentAPI
+ */
+@WebServlet("/StudentAPI")
+public class StudentAPI extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Student> students = new ArrayList<>();
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public StudentAPI() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		if (students.isEmpty()) {
+			response.getWriter().println("No records found");
+		}
+		for (Student s: students) {
+			response.getWriter().println(
+					"Id: " + s.id + " name: " + s.name + " age: " + s.age
+					);
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+//		doGet(request, response);
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		int age = Integer.parseInt(request.getParameter("age"));
+		students.add(new Student(id, name, age));
+		response.getWriter().println("Student added");
+	}
+	
+	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws
+	IOException {
+		int id = Integer.parseInt(req.getParameter("id"));
+		String name = req.getParameter("name");
+		int age = Integer.parseInt(req.getParameter("age"));
+		boolean found = false;
+		for (Student s: students) {
+			if (s.id == id) {
+				s.name = name;
+				s.age = age;
+				found = true;
+			}
+		}
+		
+		if (found) {
+			res.getWriter().println("Student updated");
+		} else {
+			res.getWriter().println("Student not found");
+		}
+		
+	}
+	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws
+	IOException {
+		int id = Integer.parseInt(req.getParameter("id"));
+		boolean found = false;
+		for (int i = 0; i < students.size(); i++) {
+			if (students.get(i).id == id) {
+				found = true;
+				students.remove(i);
+			}
+		}
+		if (found) {
+			res.getWriter().println("Student Deleted");
+		} else {
+			res.getWriter().println("Student not found");
+		}
+	}
+	
+
+}
