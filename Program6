@@ -1,0 +1,85 @@
+package practice;
+
+import java.util.Scanner;
+
+class InvalidAgeException extends Exception {
+	InvalidAgeException(String msg) {
+		super(msg);
+	}
+}
+
+class Validate {
+	static void valideAge(int age) throws InvalidAgeException {
+		if (age < 0) {
+			throw new InvalidAgeException("Age must be greater than 0");
+		}
+		else if (age < 18) {
+			throw new InvalidAgeException("Not eligible");
+		} else {
+			System.out.println("Valid age");
+		}
+	}
+	
+	static int divideNumber (int num1, int num2) {
+		if (num2 == 0) { 
+			throw new ArithmeticException("Cannot divide by zero");
+		}
+		
+		return num1/num2;
+	}
+	
+}
+
+public class Program6 {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		boolean running = true;
+		
+		while (running) {
+			System.out.println("1. Age validation");
+			System.out.println("2. Divide number");
+			System.out.println("3. Exit");
+			int ch = sc.nextInt();
+			
+			try {
+				switch(ch) {
+				case 1:
+					System.out.println("Enter age: ");
+					int age = sc.nextInt();
+					Validate.valideAge(age);
+					break;
+					
+				case 2:
+					System.out.println("Enter number1: ");
+					int num1 = sc.nextInt();
+					System.out.println("Enter number 2: ");
+					int num2 = sc.nextInt();
+					Validate.divideNumber(num1, num2);
+					break;
+					
+				case 3:
+					running = false;
+					break;
+				default:
+					System.out.println("Invalid choice");
+				}
+			}
+			catch(InvalidAgeException e) {
+				System.out.println(e);
+			}
+			catch(ArithmeticException e) {
+				System.out.println(e);
+			}
+			catch(Exception e) {
+				System.out.println(e);
+			}
+			finally {
+				System.out.println("Finally block");
+			}
+		}
+		
+	}
+
+}
