@@ -12,3 +12,50 @@ HAVING COUNT(*) = (
         GROUP BY tin
     ) AS temp
 );
+
+Query 2:
+SELECT u.address
+FROM user u
+JOIN purchased_by p ON u.user_id = p.user_id
+JOIN solar_panel s ON s.pv_no = p.pv_no
+WHERE s.capacity = (
+    SELECT MAX(capacity)
+    FROM solar_panel
+);
+
+
+Query 3:
+SELECT u.address 
+FROM user u 
+JOIN installation i ON i.user_id = u.user_id 
+JOIN solar_panel s ON s.pv_no = i.pv_no 
+WHERE s.p_type = "Mono";
+
+Query 4:
+SELECT u.address, 
+       s.p_type, 
+       SUM(i.installation_charge) AS total_charge
+FROM installation i
+JOIN user u ON u.user_id = i.user_id
+JOIN solar_panel s ON s.pv_no = i.pv_no
+GROUP BY u.address, s.p_type;
+
+
+Query 5:
+SELECT v.fname, s.pv_no
+FROM installation i
+JOIN vendor v ON v.tin = i.tin
+JOIN solar_panel s ON s.pv_no = i.pv_no
+WHERE i.install_date = (
+    SELECT MIN(i.install_date)
+    FROM installation i
+);
+
+Query 6:
+SELECT s.p_type,
+       AVG(s.capacity) AS avg_sales
+FROM installation i
+JOIN solar_panel s ON s.pv_no = i.pv_no
+WHERE i.install_type = 'Commercial'
+GROUP BY s.p_type;
+
