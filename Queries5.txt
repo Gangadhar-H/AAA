@@ -1,0 +1,14 @@
+Query 1:
+SELECT tin, COUNT(*) AS total_domestic
+FROM installation
+WHERE install_type = 'Domestic'
+GROUP BY tin
+HAVING COUNT(*) = (
+    SELECT MAX(total_count)
+    FROM (
+        SELECT COUNT(*) AS total_count
+        FROM installation
+        WHERE install_type = 'Domestic'
+        GROUP BY tin
+    ) AS temp
+);
