@@ -1,0 +1,37 @@
+package practice;
+
+abstract class Printer {
+	abstract void configuration();
+	abstract void display();
+}
+
+class DotMatrix extends Printer {
+	@Override
+	void configuration() {
+		System.out.println("Configuration of Dot-Matrix");
+		System.out.println("Resolution 120x80");
+	}
+	void display() {
+		System.out.println("Printer: Dot-Matrix");
+	}
+}
+
+class LaserJet extends Printer {
+	void configuration() {
+		System.out.println("Configuration of laser jet");
+		System.out.println("Resolution 120x120");
+	}
+	void display() {
+		System.out.println("Printer: Laser Jet");
+	}
+}
+
+
+public class Program4 {
+
+	public static void main(String[] args) {
+		
+
+	}
+
+}
